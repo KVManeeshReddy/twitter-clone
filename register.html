@@ -1,0 +1,328 @@
+<html>
+    <head>
+        <script  type ="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js" integrity="sha256-R7aNzoy2gFrVs+pNJ6+SokH04ppcEqJ0yFLkNGoFALQ=" crossorigin="anonymous"></script>
+        <script type ="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+        <script>
+            var currentUser = ""
+            $(function(){  
+                $('#loginForm').hide()
+                $('#registerForm').show()
+                $('#homePage').hide()
+                $('#registerForm').submit(async function(event){
+                    event.preventDefault();
+                    //console.log("clicked");
+                    const form = event.currentTarget;
+                    const formData = new FormData(form);
+                    const url = form.action
+                    let plainFormData = Object.fromEntries(formData.entries());
+                    let res = $('#userName').val()
+                    plainFormData.userName = res
+                    const formDataJsonString = JSON.stringify(plainFormData);
+                    const fetchOptions = {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                        },
+                        body: formDataJsonString,
+                    };
+                    const response = await fetch(url,fetchOptions);
+                    const resobj = await response.json()
+                    if(resobj.service == "register" && resobj.code == "200"){
+                        $('#registerForm').hide()
+                        $('#ErrorMessage').val('')
+                        $('#loginForm').show()
+                        $('#homePage').hide()
+                    }
+
+                    else{
+                        writeErrorToScreen(resobj.message)
+                    }
+                });
+
+                $('#loginForm').submit(async function(event){
+                    event.preventDefault();
+                    console.log("clicked");
+                    const form = event.currentTarget;
+                    const formData = new FormData(form);
+                    const url = "http://localhost:8080/login"
+                    let plainFormData = Object.fromEntries(formData.entries());
+                    let res = $('#userName').val()
+                    plainFormData.userName = res
+                    const formDataJsonString = JSON.stringify(plainFormData);
+                    const fetchOptions = {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                        },
+                        body: formDataJsonString,
+                    };
+                    const response = await fetch(url,fetchOptions);
+                    const resobj = await response.json()
+                    if(resobj.service == "login" && resobj.code == "200"){
+                        $('.userForm').hide()
+                        $('#homePage').show()
+                        let header = document.getElementById('loggedInUserName')
+                        header.innerHTML = "Welcome " + res
+                        currentUser = res
+                        testWebSocket(res)
+                    }
+                    else{
+                        writeErrorToScreen(resobj.message)
+                    }
+                });
+
+                $('#queryForm').submit(async function(event){
+                    event.preventDefault();
+                    const form = event.currentTarget;
+                    const formData = new FormData(form);
+                    const url = "http://localhost:8080/query"
+                    const plainFormData = Object.fromEntries(formData.entries());
+                    let res = $('#userName').val()
+                    const formDataJsonString = JSON.stringify(plainFormData);
+                    const fetchOptions = {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                        },
+                        body: formDataJsonString,
+                    };
+                    const response = await fetch(url,fetchOptions);
+                    const resobj = await response.json()
+                    if(resobj.service == "query" && resobj.code == "200"){
+                        let res = document.getElementById('queryResult')
+                        res.innerHTML = resobj.message
+                    }
+                    else{
+                        writeErrorToScreen(resobj.message)
+                    }
+                });
+
+                $('#subscribeForm').submit(async function(event){
+                    event.preventDefault();
+                    const form = event.currentTarget;
+                    const formData = new FormData(form);
+                    const url = "http://localhost:8080/subscribe"
+                    let plainFormData = Object.fromEntries(formData.entries());
+                    let res = $('#userName').val()
+                    plainFormData.userName = res
+                    const formDataJsonString = JSON.stringify(plainFormData);
+                    const fetchOptions = {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                        },
+                        body: formDataJsonString,
+                    };
+                    const response = await fetch(url,fetchOptions);
+                    const resobj = await response.json()
+                    if(resobj.service == "subscribe" && resobj.code == "200"){
+                        let res = document.getElementById('subscribeMessage')
+                        res.innerHTML = resobj.message
+                    }
+                    else{
+                        writeErrorToScreen(resobj.message)
+                    }
+                });
+        });
+        </script>
+        <style>
+      input[type=text], input[type=password] {
+      width: calc(100% - 57px);
+      height: 36px;
+      margin: 13px 0 0 30px;
+      padding-left: 10px; 
+      border-radius: 1px 5px 5px 1px;
+      border: solid 1px #cbc9c9; 
+      box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+      background: #fff; 
+      }
+      .userForm {
+      max-width: 340px; 
+      min-height: 240px; 
+      padding: 10px 0;
+      margin: auto;
+      border-radius: 5px; 
+      border: solid 1px #ccc;
+      box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+      background: #ebebeb; 
+      }
+      form {
+      margin: 0 30px;
+      }
+      h1 {
+      padding: 10px 0;
+      font-size: 32px;
+      font-weight: 300;
+      font-family: Roboto, Arial, sans-serif;
+      text-align: center;
+      }
+      body, div, form, input, p { 
+      margin: 30;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 16px;
+      color: #666;
+      }
+      button, input[type=submit] {
+      width: 70%;
+      padding: 10px 0;
+      margin: 10px 50px;
+      border-radius: 5px; 
+      border: none;
+      background: #1c87c9; 
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      }
+      input[type=submit]:hover,button:hover {
+      background: #26a9e0;
+      }
+      textarea {
+        width: 100%;
+        height: 50px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 16px;
+        resize: none;
+      }
+      .tweetButton{
+        width: 50%;
+        float: left;
+      }
+      ul, li {
+        list-style-type: none;
+      }
+      li {
+        padding-left: 2em; 
+        text-indent: -2em;
+      }  
+        </style>
+    </head>
+    <body>
+        <form id="registerForm" action="register" class="userForm">
+            <h1>Register</h1>
+            <input type="text" name="userName" id="userName" placeholder="Enter user name"/>
+            <input type="password" name="value" id="password" placeholder="Enter password"/>
+            <input id="registerButton" type ="submit" value="Register"/>
+            <p>Already registered?<button onclick="login()">Login</button></p>
+        </form>
+        <form id="loginForm" action = "login" class="userForm">
+            <h1>Login</h1>
+            <input type="text" name="userName" id="loginName" placeholder="Enter user name"/>
+            <input type="password" name="value" id="loginpassword" placeholder="Enter password"/>
+            <input id="LoginButton" type ="submit" value="Login"/>
+        </form>
+
+        <div name="ErrorMessage" id="ErrorMessage"></div>
+      <div style="height:100%;width:100%">
+        <div id="homePage">
+            <p><h2 id="loggedInUserName"></h2><form><input type="submit" style="width:10%;" action="/" value="Logout"></form></p>
+            <div style="float:left;padding-top: 1px;">
+                <div style="padding-top: 10px;padding-bottom: 10px;border-radius: 8px;background-color: whitesmoke">
+                      <form id="subscribeForm" action="subscribe">
+                        <input type="text" name="value" id="subscribe" placeholder="user name to follow"/>
+                        <input type="submit" name="subscribe" value="follow"/>
+                      </form>
+                    <div id="subscribeMessage"></div>
+                </div>
+                <div style="padding-top: 10px;padding-bottom: 10px; border-radius: 8px;background-color: whitesmoke">
+                      <form id="queryForm" action="query">
+                        <input type="text" name="value" id="search" placeholder="@user name / hashtag"/>
+                        <input type="submit" name="search" value="search"/>
+                      </form>
+                <div id="queryResult"></div>
+            </div>
+        </div>
+            <div style="float:left;padding-top: 50px;">
+                <textarea id = "userTweet" placeholder="Post your status" style="width: 150%;height:10%"></textarea>
+                <button style="float: right;" class="tweetButton" onclick="tweet()">Tweet</button>
+                <br/>
+                <p style="float:left;margin-left:0">Tweets so far:</p>
+                <div style="margin-left:0;float:left;width:150%;padding-bottom: 20px; border-radius: 8px;background-color: whitesmoke" name="output" id="output">
+                    <ul id="alltweets"></ul>
+                </div>
+           </div>
+      </div>
+    </div>
+    </body>
+<script>
+  var wsUri = "ws://localhost:8080/websocket";
+  function tweet(){
+    let message = $("#userTweet").val()
+    $("#userTweet").val('')
+    websocket.send(JSON.stringify({
+          'userName': currentUser,
+          'value': message,
+          'reqType':"tweet"
+    }));
+  }
+  function login(){
+    $("#registerForm").hide()
+    $("#loginForm").show()
+  }
+  function testWebSocket(userName)
+  {userName
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt,userName) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
+
+  function onOpen(evt,userName)
+  {
+    //console.log("CONNECTED");
+    websocket.send(JSON.stringify({
+          'userName': userName,
+          'value': "",
+          'reqType':""
+    }));
+  }
+
+  function onClose(evt)
+  {
+    console.log("DISCONNECTED");
+  }
+
+  function onMessage(evt)
+  {
+    writeToScreen('<span>' + evt.data+'</span>');
+  }
+
+  function onError(evt)
+  {
+    alert(evt.data);
+  }
+
+  function doSend(message,messageType)
+  {
+    writeToScreen("SENT: " + message); 
+    websocket.send(message,messageType);
+  }
+
+  function writeToScreen(message)
+  { let output = document.getElementById("alltweets");
+    var pre = document.createElement("li");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.prepend(pre);
+  }
+
+  function writeErrorToScreen(message)
+  { //let output = document.getElementById("ErrorMessage")
+    // var pre = document.createElement("p");
+    // pre.style.wordWrap = "break-word";
+    // pre.innerHTML = message;
+    // output.prepend(pre);
+    alert(message)
+  }
+  
+</script>
+</html>

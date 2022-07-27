@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "uNVPCHBSP797l0bz4IlO+zV2JuBJ3CW3JjhvZNdatgwJpUr6afwo5rkvQtVoZM3xttBM6KW1zBMbF/icNO8IZQ==",
+  "success": true,
+  "projectFilePath": "/Users/maneeshreddy/SEM-1/DOSP/projects/DOSP-project5/twitter-clone/twitter-clone.fsproj",
+  "expectedPackageFiles": [
+    "/Users/maneeshreddy/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
