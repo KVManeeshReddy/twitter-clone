@@ -85,6 +85,7 @@ let BossActor (mailbox: Actor<_>) =
                                     let message = user + " Tweeted : " + message
                                     if(usersCred.ContainsKey(i)) then
                                       sendMessage wsMap.[i] message |> ignore
+                                  sendMessage wsMap.[user] ("your tweet : " + message) |> ignore
 
         |MapSocket (user,ws) ->  wsMap <- Map.add user ws wsMap
 

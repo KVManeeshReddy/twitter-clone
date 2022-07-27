@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/maneeshreddy/SEM-1/DOSP/projects/Final-Project/Final-Project.fsproj": {}
+  },
+  "projects": {
+    "/Users/maneeshreddy/SEM-1/DOSP/projects/Final-Project/Final-Project.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/maneeshreddy/SEM-1/DOSP/projects/Final-Project/Final-Project.fsproj",
+        "projectName": "Final-Project",
+        "projectPath": "/Users/maneeshreddy/SEM-1/DOSP/projects/Final-Project/Final-Project.fsproj",
+        "packagesPath": "/Users/maneeshreddy/.nuget/packages/",
+        "outputPath": "/Users/maneeshreddy/SEM-1/DOSP/projects/Final-Project/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/maneeshreddy/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Akka": {
+              "target": "Package",
+              "version": "[1.4.29, )",
+              "generatePathProperty": true
+            },
+            "Akka.FSharp": {
+              "target": "Package",
+              "version": "[1.4.29, )",
+              "generatePathProperty": true
+            },
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[6.0.1, )",
+              "generatePathProperty": true
+            },
+            "FSharp.Json": {
+              "target": "Package",
+              "version": "[0.4.1, )",
+              "generatePathProperty": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )",
+              "generatePathProperty": true
+            },
+            "Suave": {
+              "target": "Package",
+              "version": "[2.6.1, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

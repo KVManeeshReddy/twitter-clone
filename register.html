@@ -10,7 +10,6 @@
                 $('#homePage').hide()
                 $('#registerForm').submit(async function(event){
                     event.preventDefault();
-                    //console.log("clicked");
                     const form = event.currentTarget;
                     const formData = new FormData(form);
                     const url = form.action
@@ -42,7 +41,6 @@
 
                 $('#loginForm').submit(async function(event){
                     event.preventDefault();
-                    console.log("clicked");
                     const form = event.currentTarget;
                     const formData = new FormData(form);
                     const url = "http://localhost:8080/login"
@@ -173,13 +171,13 @@
       margin: 10px 50px;
       border-radius: 5px; 
       border: none;
-      background: #1c87c9; 
+      background: rgb(26, 140, 216); 
       font-size: 14px;
       font-weight: 600;
       color: #fff;
       }
       input[type=submit]:hover,button:hover {
-      background: #26a9e0;
+      background: rgb(29, 155, 240);
       }
       textarea {
         width: 100%;
@@ -193,7 +191,6 @@
         resize: none;
       }
       .tweetButton{
-        width: 50%;
         float: left;
       }
       ul, li {
@@ -205,13 +202,14 @@
       }  
         </style>
     </head>
-    <body>
+    <body style="background-color: black;">
         <form id="registerForm" action="register" class="userForm">
             <h1>Register</h1>
             <input type="text" name="userName" id="userName" placeholder="Enter user name"/>
             <input type="password" name="value" id="password" placeholder="Enter password"/>
             <input id="registerButton" type ="submit" value="Register"/>
-            <p>Already registered?<button onclick="login()">Login</button></p>
+            <div style="margin:15px;">Already registered?</div>
+            <button onclick="login()">Login</button>
         </form>
         <form id="loginForm" action = "login" class="userForm">
             <h1>Login</h1>
@@ -223,8 +221,11 @@
         <div name="ErrorMessage" id="ErrorMessage"></div>
       <div style="height:100%;width:100%">
         <div id="homePage">
-            <p><h2 id="loggedInUserName"></h2><form><input type="submit" style="width:10%;" action="/" value="Logout"></form></p>
-            <div style="float:left;padding-top: 1px;">
+            <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+              <div style="font-size: x-large;" id="loggedInUserName"></div>
+              <form action="/"><input type="submit" value="Logout"></form>
+            </div>
+            <div style="border: 1px solid white;float:left;padding-top: 1px;">
                 <div style="padding-top: 10px;padding-bottom: 10px;border-radius: 8px;background-color: whitesmoke">
                       <form id="subscribeForm" action="subscribe">
                         <input type="text" name="value" id="subscribe" placeholder="user name to follow"/>
@@ -240,12 +241,12 @@
                 <div id="queryResult"></div>
             </div>
         </div>
-            <div style="float:left;padding-top: 50px;">
-                <textarea id = "userTweet" placeholder="Post your status" style="width: 150%;height:10%"></textarea>
-                <button style="float: right;" class="tweetButton" onclick="tweet()">Tweet</button>
+            <div style="border: 1px solid white;float:left;padding: 15px;">
+                <textarea id = "userTweet" placeholder="Post your status" style="width: 100%;height:10%"></textarea>
+                <button class="tweetButton" onclick="tweet()">Tweet</button>
                 <br/>
-                <p style="float:left;margin-left:0">Tweets so far:</p>
-                <div style="margin-left:0;float:left;width:150%;padding-bottom: 20px; border-radius: 8px;background-color: whitesmoke" name="output" id="output">
+                <p style="font-size:larger;float:left;margin-left:0;color:rgb(29, 155, 240)">TWEETS:</p>
+                <div style="margin-left:0;float:left;width:100%;padding-bottom: 20px; border-radius: 8px;background-color: whitesmoke" name="output" id="output">
                     <ul id="alltweets"></ul>
                 </div>
            </div>
@@ -278,7 +279,6 @@
 
   function onOpen(evt,userName)
   {
-    //console.log("CONNECTED");
     websocket.send(JSON.stringify({
           'userName': userName,
           'value': "",
@@ -311,16 +311,13 @@
   { let output = document.getElementById("alltweets");
     var pre = document.createElement("li");
     pre.style.wordWrap = "break-word";
+    pre.style.color = "red";
     pre.innerHTML = message;
     output.prepend(pre);
   }
 
   function writeErrorToScreen(message)
-  { //let output = document.getElementById("ErrorMessage")
-    // var pre = document.createElement("p");
-    // pre.style.wordWrap = "break-word";
-    // pre.innerHTML = message;
-    // output.prepend(pre);
+  {
     alert(message)
   }
   
